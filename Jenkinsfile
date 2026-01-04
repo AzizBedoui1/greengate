@@ -89,7 +89,7 @@ pipeline {
                         git config user.name "Jenkins-CI"
                         git add %HELM_CHART_PATH%/values.yaml
                         git commit -m "chore: update image tags to build %IMAGE_TAG% [skip ci]"
-                        git push origin main
+                        git push origin HEAD:main
                     """
                 }
             }
