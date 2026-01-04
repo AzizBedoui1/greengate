@@ -66,10 +66,10 @@ resources:
   backend:
     limits:
       cpu: 500m
-      memory: 512Mi
+      memory: 1Gi
     requests:
       cpu: 250m
-      memory: 256Mi
+      memory: 512Mi
   user:
     limits:
       cpu: 200m
@@ -95,6 +95,7 @@ resources:
 # Environment variables
 env:
   backend:
+    MONGO_URI: "mongodb://greengate-mongo:27017/greengate"
     JWT_SECRET: "your_jwt_secret_here"
     JWT_EXPIRE: "7d"
     PORT: "5000"
