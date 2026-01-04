@@ -17,14 +17,14 @@ pipeline {
         stage('Stop Running Containers') {
             steps {
                 echo 'Stopping existing containers...'
-                sh "${DOCKER_COMPOSE} down --remove-orphans"
+                bat "${DOCKER_COMPOSE} down --remove-orphans"
             }
         }
         
         stage('Clean Docker Resources') {
             steps {
                 echo 'Cleaning up old images and containers...'
-                sh """
+                bat """
                     docker system prune -f
                     docker volume prune -f
                 """
@@ -34,7 +34,7 @@ pipeline {
         stage('Build and Deploy') {
             steps {
                 echo 'Building and starting all services...'
-                sh "${DOCKER_COMPOSE} up -d --build --force-recreate"
+                bat "${DOCKER_COMPOSE} up -d --build --force-recreate"
             }
         }
         
@@ -42,12 +42,8 @@ pipeline {
             steps {
                 echo 'Checking container health...'
                 script {
-                    sh "sleep 10" // Wait for containers to start
-                    def containerStatus = sh(
-                        script: "${DOCKER_COMPOSE} ps",
-                        returnStdout: true
-                    ).trim()
-                    echo containerStatus
+                    sleep 10 // Wait for containers to start
+                    bat "${DOCKER_COMPOSE} ps"
                 }
             }
         }
@@ -55,7 +51,7 @@ pipeline {
         stage('Display Logs') {
             steps {
                 echo 'Displaying recent container logs...'
-                sh "${DOCKER_COMPOSE} logs --tail=50"
+                bat "${DOCKER_COMPOSE} logs --tail=50"
             }
         }
     }
@@ -68,11 +64,11 @@ pipeline {
         failure {
             echo 'Deployment failed!'
             echo 'Checking logs for errors...'
-            sh "${DOCKER_COMPOSE} logs --tail=100"
+            bat "${DOCKER_COMPOSE} logs --tail=100"
         }
         always {
             echo 'Deployment process completed'
-            sh "${DOCKER_COMPOSE} ps"
+            bat "${DOCKER_COMPOSE} ps"
         }
     }
 }
