@@ -11,6 +11,9 @@ pipeline {
         
         HELM_CHART_PATH = "./helm-chart"
         K8S_NAMESPACE = "greengate"
+        
+        // Define the Backend URL for the Frontend to use
+        BACKEND_URL = "http://localhost:30001"
     }
     
     stages {
@@ -23,11 +26,12 @@ pipeline {
         
         stage('Build Docker Images') {
             steps {
-                echo 'Building Docker images...'
+                echo 'Building Docker images with Build Arguments...'
+                // We add --build-arg so Vite knows where the backend is located
                 bat """
                     docker build -t greengate-backend:latest ./greengate-backend
-                    docker build -t greengate-admin:latest ./greengate-admin
-                    docker build -t greengate-user:latest ./greengate-user
+                    docker build --build-arg VITE_API_URL=%BACKEND_URL% -t greengate-admin:latest ./greengate-admin
+                    docker build --build-arg VITE_API_URL=%BACKEND_URL% -t greengate-user:latest ./greengate-user
                 """
             }
         }
@@ -75,15 +79,12 @@ pipeline {
             steps {
                 echo 'Updating Helm Chart image tags in Git via PowerShell...'
                 script {
-                    // This updates the values.yaml file with the new build number
                     bat """
                         powershell -Command "(Get-Content %HELM_CHART_PATH%/values.yaml) -replace 'tag:.*# backend', 'tag: %IMAGE_TAG% # backend' | Set-Content %HELM_CHART_PATH%/values.yaml"
                         powershell -Command "(Get-Content %HELM_CHART_PATH%/values.yaml) -replace 'tag:.*# admin', 'tag: %IMAGE_TAG% # admin' | Set-Content %HELM_CHART_PATH%/values.yaml"
                         powershell -Command "(Get-Content %HELM_CHART_PATH%/values.yaml) -replace 'tag:.*# user', 'tag: %IMAGE_TAG% # user' | Set-Content %HELM_CHART_PATH%/values.yaml"
                     """
                     
-                    // Commit and Push the change back to the repo
-                    // Note: Jenkins needs git credentials configured or SSH access to push
                     bat """
                         git config user.email "jenkins@greengate.local"
                         git config user.name "Jenkins-CI"
