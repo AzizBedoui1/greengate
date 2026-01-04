@@ -1,0 +1,24 @@
+{{- if .Values.monitoring.serviceMonitor.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "greengate.fullname" . }}-backend
+  labels:
+    app: {{ include "greengate.name" . }}-backend
+    chart: {{ include "greengate.chart" . }}
+    release: {{ .Release.Name }}
+    component: backend
+spec:
+  selector:
+    matchLabels:
+      app: {{ include "greengate.name" . }}-backend
+      release: {{ .Release.Name }}
+  endpoints:
+  - port: http
+    path: {{ .Values.monitoring.serviceMonitor.path }}
+    interval: {{ .Values.monitoring.serviceMonitor.interval }}
+    scrapeTimeout: 10s
+  namespaceSelector:
+    matchNames:
+    - {{ .Values.namespace | default "greengate" }}
+{{- end }}

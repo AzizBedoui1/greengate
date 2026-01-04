@@ -1,0 +1,14 @@
+apiVersion: v2
+name: greengate
+description: A Helm chart for GreenGate MERN application
+type: application
+version: 1.0.0
+appVersion: "1.0.0"
+keywords:
+  - mern
+  - mongodb
+  - nodejs
+  - react
+maintainers:
+  - name: Moncef Aziz Bedoui
+    email: moncefaziz.bedoui@polytechnicien.tn

@@ -7,8 +7,11 @@ pipeline {
         IMAGE_TAG = "${BUILD_NUMBER}"
         
         DOCKERHUB_USERNAME = "moncefazizbedoui"
-        
         DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials')
+        
+        HELM_RELEASE_NAME = "greengate"
+        HELM_CHART_PATH = "./helm-chart"
+        K8S_NAMESPACE = "greengate"
     }
     
     stages {
@@ -107,27 +110,36 @@ pipeline {
             }
         }
         
-        stage('Deploy to Kubernetes') {
+        stage('Deploy to Kubernetes with Helm') {
             steps {
-                echo 'Deploying to Kubernetes (Docker Desktop)...'
+                echo 'Deploying to Kubernetes using Helm...'
                 script {
-                    // Apply all Kubernetes manifests
+                    // Create namespace if it doesn't exist
                     bat """
-                        kubectl apply -f k8s/namespace.yaml
-                        kubectl apply -f k8s/mongodb-deployment.yaml
-                        timeout /t 10 /nobreak
-                        kubectl apply -f k8s/backend-deployment.yaml
-                        kubectl apply -f k8s/admin-deployment.yaml
-                        kubectl apply -f k8s/user-deployment.yaml
+                        kubectl get namespace %K8S_NAMESPACE% || kubectl create namespace %K8S_NAMESPACE%
+                    """
+                    
+                    // Deploy using Helm with updated image tags
+                    bat """
+                        helm upgrade --install %HELM_RELEASE_NAME% %HELM_CHART_PATH% ^
+                            --namespace %K8S_NAMESPACE% ^
+                            --set image.backend.tag=%IMAGE_TAG% ^
+                            --set image.admin.tag=%IMAGE_TAG% ^
+                            --set image.user.tag=%IMAGE_TAG% ^
+                            --set image.backend.repository=%DOCKERHUB_USERNAME%/greengate-backend ^
+                            --set image.admin.repository=%DOCKERHUB_USERNAME%/greengate-admin ^
+                            --set image.user.repository=%DOCKERHUB_USERNAME%/greengate-user ^
+                            --set monitoring.serviceMonitor.enabled=false ^
+                            --wait ^
+                            --timeout 5m
                     """
                     
                     // Wait for deployments to be ready
                     echo 'Waiting for deployments to be ready...'
                     bat """
-                        kubectl wait --for=condition=available --timeout=300s deployment/mongodb -n greengate
-                        kubectl wait --for=condition=available --timeout=300s deployment/greengate-backend -n greengate
-                        kubectl wait --for=condition=available --timeout=300s deployment/greengate-admin -n greengate
-                        kubectl wait --for=condition=available --timeout=300s deployment/greengate-user -n greengate
+                        kubectl wait --for=condition=available --timeout=300s deployment/%HELM_RELEASE_NAME%-greengate-backend -n %K8S_NAMESPACE%
+                        kubectl wait --for=condition=available --timeout=300s deployment/%HELM_RELEASE_NAME%-greengate-admin -n %K8S_NAMESPACE%
+                        kubectl wait --for=condition=available --timeout=300s deployment/%HELM_RELEASE_NAME%-greengate-user -n %K8S_NAMESPACE%
                     """
                 }
             }
@@ -138,14 +150,17 @@ pipeline {
                 echo 'Verifying Kubernetes deployment...'
                 bat """
                     echo.
+                    echo ========== HELM RELEASE STATUS ==========
+                    helm status %HELM_RELEASE_NAME% -n %K8S_NAMESPACE%
+                    echo.
                     echo ========== PODS ==========
-                    kubectl get pods -n greengate
+                    kubectl get pods -n %K8S_NAMESPACE%
                     echo.
                     echo ========== SERVICES ==========
-                    kubectl get services -n greengate
+                    kubectl get services -n %K8S_NAMESPACE%
                     echo.
                     echo ========== DEPLOYMENTS ==========
-                    kubectl get deployments -n greengate
+                    kubectl get deployments -n %K8S_NAMESPACE%
                 """
             }
         }
@@ -153,7 +168,7 @@ pipeline {
     
     post {
         success {
-            echo 'BUILD, SCAN, PUSH, AND DEPLOYMENT COMPLETED SUCCESSFULLY!'
+            echo 'BUILD, SCAN, PUSH, AND HELM DEPLOYMENT COMPLETED SUCCESSFULLY!'
             echo ''
             echo 'Trivy Security Reports:'
             echo '   - trivy-backend-report.json'
@@ -168,13 +183,14 @@ pipeline {
             echo "   - ${DOCKERHUB_USERNAME}/greengate-user:latest"
             echo "   - ${DOCKERHUB_USERNAME}/greengate-user:${IMAGE_TAG}"
             echo ''
-            echo 'Application Deployed to Kubernetes!'
+            echo 'Application Deployed via Helm to Kubernetes!'
+            echo "Helm Release: ${HELM_RELEASE_NAME}"
+            echo "Namespace: ${K8S_NAMESPACE}"
             echo ''
             echo 'Access your application at:'
             echo '   Backend API:     http://localhost:30001'
             echo '   Admin Frontend:  http://localhost:30002'
             echo '   User Frontend:   http://localhost:30003'
-            echo '   MongoDB:         localhost:30017'
             
             // Archive Trivy reports
             archiveArtifacts artifacts: 'trivy-*-report.json', allowEmptyArchive: true
@@ -184,13 +200,13 @@ pipeline {
             echo 'Checking status...'
             bat """
                 docker images
-                kubectl get pods -n greengate
-                kubectl get events -n greengate --sort-by=.metadata.creationTimestamp
+                helm list -n %K8S_NAMESPACE%
+                kubectl get pods -n %K8S_NAMESPACE%
+                kubectl get events -n %K8S_NAMESPACE% --sort-by=.metadata.creationTimestamp
             """
         }
         always {
             echo 'Pipeline execution completed'
-            // Cleanup: remove Docker Hub credentials from memory
             bat "docker logout"
         }
     }

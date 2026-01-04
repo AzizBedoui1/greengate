@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "greengate.fullname" . }}-mongo
+  labels:
+    app: {{ include "greengate.name" . }}-mongo
+    chart: {{ include "greengate.chart" . }}
+    release: {{ .Release.Name }}
+    component: database
+spec:
+  serviceName: {{ include "greengate.fullname" . }}-mongo
+  replicas: {{ .Values.replicaCount.mongo }}
+  selector:
+    matchLabels:
+      app: {{ include "greengate.name" . }}-mongo
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "greengate.name" . }}-mongo
+        release: {{ .Release.Name }}
+        component: database
+    spec:
+      containers:
+      - name: mongo
+        image: "{{ .Values.image.mongo.repository }}:{{ .Values.image.mongo.tag }}"
+        imagePullPolicy: {{ .Values.image.mongo.pullPolicy }}
+        ports:
+        - name: mongo
+          containerPort: {{ .Values.service.mongo.targetPort }}
+          protocol: TCP
+        volumeMounts:
+        - name: mongo-data
+          mountPath: /data/db
+        resources:
+          {{- toYaml .Values.resources.mongo | nindent 10 }}
+  {{- if .Values.persistence.enabled }}
+  volumeClaimTemplates:
+  - metadata:
+      name: mongo-data
+    spec:
+      accessModes: [ {{ .Values.persistence.accessMode | quote }} ]
+      {{- if .Values.persistence.storageClass }}
+      storageClassName: {{ .Values.persistence.storageClass | quote }}
+      {{- end }}
+      resources:
+        requests:
+          storage: {{ .Values.persistence.size }}
+  {{- else }}
+      volumes:
+      - name: mongo-data
+        emptyDir: {}
+  {{- end }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "greengate.fullname" . }}-mongo
+  labels:
+    app: {{ include "greengate.name" . }}-mongo
+    chart: {{ include "greengate.chart" . }}
+    release: {{ .Release.Name }}
+    component: database
+spec:
+  type: {{ .Values.service.mongo.type }}
+  clusterIP: None
+  ports:
+  - port: {{ .Values.service.mongo.port }}
+    targetPort: mongo
+    protocol: TCP
+    name: mongo
+  selector:
+    app: {{ include "greengate.name" . }}-mongo
+    release: {{ .Release.Name }}
