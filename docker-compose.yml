@@ -1,0 +1,45 @@
+version: "3.9"
+services:
+  backend:
+    build: ./greengate-backend
+    container_name: greengate-backend
+    ports:
+      - "5000:5000"
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/greengate
+      - JWT_SECRET=your_jwt_secret_here
+      - JWT_EXPIRE=7d
+      - PORT=5000
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:6
+    container_name: greengate-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  user:
+    build: ./greengate-user
+    container_name: greengate-user
+    ports:
+      - "3001:80"
+    depends_on:
+      - backend
+    environment:
+      - VITE_API_URL=http://localhost:5000
+
+  admin:
+    build: ./greengate-admin
+    container_name: greengate-admin
+    ports:
+      - "3002:80"
+    depends_on:
+      - backend
+    environment:
+      - VITE_API_URL=http://localhost:5000
+
+volumes:
+  mongo-data:

@@ -9,7 +9,7 @@ const BlogPostPage = () => {
     const { id } = useParams();
     const [blog, setBlog] = useState(null);
     const [loading, setLoading] = useState(true);
-    const API_BASE_URL = axios.defaults.baseURL || "http://localhost:5000/api";
+    const API_BASE_URL = axios.defaults.baseURL || "http://backend:5000/api";
 
     useEffect(() => {
         const fetchBlog = async () => {

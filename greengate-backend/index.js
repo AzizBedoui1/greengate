@@ -4,6 +4,7 @@ const cors = require("cors");
 const path = require('path'); 
 const bodyParser = require("body-parser");
 const connectDB = require("./config/db");
+const { seedAdmin } = require("./seedAdmin");
 
 const authRoutes = require("./routes/auth");
 const profileRoutes = require("./routes/profile");
@@ -31,5 +32,9 @@ app.use("/api/uploads", express.static("uploads"));
 
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, async () => {
+  console.log(`Server running on port ${PORT}`);
+
+  await seedAdmin();
+});
  
