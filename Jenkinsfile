@@ -5,6 +5,10 @@ pipeline {
         DOCKER_COMPOSE = "docker-compose"
         COMPOSE_PROJECT_NAME = "greengate"
         IMAGE_TAG = "${BUILD_NUMBER}"
+        
+        DOCKERHUB_USERNAME = "moncefazizbedoui"
+        
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials')
     }
     
     stages {
@@ -54,14 +58,52 @@ pipeline {
             }
         }
         
-        stage('Tag Images for Kubernetes') {
+        stage('Tag Images for Docker Hub') {
             steps {
-                echo 'Tagging images...'
+                echo 'Tagging images for Docker Hub...'
                 bat """
-                    docker tag greengate-backend:latest greengate-backend:${IMAGE_TAG}
-                    docker tag greengate-admin:latest greengate-admin:${IMAGE_TAG}
-                    docker tag greengate-user:latest greengate-user:${IMAGE_TAG}
+                    docker tag greengate-backend:latest %DOCKERHUB_USERNAME%/greengate-backend:latest
+                    docker tag greengate-backend:latest %DOCKERHUB_USERNAME%/greengate-backend:%IMAGE_TAG%
+                    
+                    docker tag greengate-admin:latest %DOCKERHUB_USERNAME%/greengate-admin:latest
+                    docker tag greengate-admin:latest %DOCKERHUB_USERNAME%/greengate-admin:%IMAGE_TAG%
+                    
+                    docker tag greengate-user:latest %DOCKERHUB_USERNAME%/greengate-user:latest
+                    docker tag greengate-user:latest %DOCKERHUB_USERNAME%/greengate-user:%IMAGE_TAG%
                 """
+            }
+        }
+        
+        stage('Push to Docker Hub') {
+            steps {
+                echo 'Pushing images to Docker Hub...'
+                script {
+                    // Login to Docker Hub
+                    bat """
+                        echo %DOCKERHUB_CREDENTIALS_PSW% | docker login -u %DOCKERHUB_CREDENTIALS_USR% --password-stdin
+                    """
+                    
+                    // Push backend images
+                    bat """
+                        docker push %DOCKERHUB_USERNAME%/greengate-backend:latest
+                        docker push %DOCKERHUB_USERNAME%/greengate-backend:%IMAGE_TAG%
+                    """
+                    
+                    // Push admin images
+                    bat """
+                        docker push %DOCKERHUB_USERNAME%/greengate-admin:latest
+                        docker push %DOCKERHUB_USERNAME%/greengate-admin:%IMAGE_TAG%
+                    """
+                    
+                    // Push user images
+                    bat """
+                        docker push %DOCKERHUB_USERNAME%/greengate-user:latest
+                        docker push %DOCKERHUB_USERNAME%/greengate-user:%IMAGE_TAG%
+                    """
+                    
+                    // Logout
+                    bat "docker logout"
+                }
             }
         }
         
@@ -111,12 +153,20 @@ pipeline {
     
     post {
         success {
-            echo 'BUILD, SCAN, AND DEPLOYMENT COMPLETED SUCCESSFULLY!'
+            echo 'BUILD, SCAN, PUSH, AND DEPLOYMENT COMPLETED SUCCESSFULLY!'
             echo ''
             echo 'Trivy Security Reports:'
             echo '   - trivy-backend-report.json'
             echo '   - trivy-admin-report.json'
             echo '   - trivy-user-report.json'
+            echo ''
+            echo 'Docker Hub Images Pushed:'
+            echo "   - ${DOCKERHUB_USERNAME}/greengate-backend:latest"
+            echo "   - ${DOCKERHUB_USERNAME}/greengate-backend:${IMAGE_TAG}"
+            echo "   - ${DOCKERHUB_USERNAME}/greengate-admin:latest"
+            echo "   - ${DOCKERHUB_USERNAME}/greengate-admin:${IMAGE_TAG}"
+            echo "   - ${DOCKERHUB_USERNAME}/greengate-user:latest"
+            echo "   - ${DOCKERHUB_USERNAME}/greengate-user:${IMAGE_TAG}"
             echo ''
             echo 'Application Deployed to Kubernetes!'
             echo ''
@@ -131,15 +181,17 @@ pipeline {
         }
         failure {
             echo 'PIPELINE FAILED!'
-            echo 'Checking Kubernetes status...'
+            echo 'Checking status...'
             bat """
+                docker images
                 kubectl get pods -n greengate
                 kubectl get events -n greengate --sort-by=.metadata.creationTimestamp
             """
         }
         always {
             echo 'Pipeline execution completed'
-            echo 'Check Console Output for detailed logs'
+            // Cleanup: remove Docker Hub credentials from memory
+            bat "docker logout"
         }
     }
 }
