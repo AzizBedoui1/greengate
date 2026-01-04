@@ -1,0 +1,348 @@
+.about {
+  position: relative;
+  background-color: #ffffff;
+  color: #0f172a;
+  z-index: 1;
+}
+
+.about::before {
+  content: "";
+  background-image: url('../assets/img/bg_abotus.png');
+  background-size: cover;
+  background-position: center;
+  opacity: 0.4; 
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: -1;
+}
+.about-hero {
+  display: flex;
+  justify-content: center;
+  padding: 7rem 1rem 2rem;
+  /* avant: 11rem 1rem 1.5rem */
+}
+
+.about-title {
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-size: 4.5rem;
+  /* avant: 7rem */
+  letter-spacing: 1px;
+  color: #37474F;
+}
+
+.about-section {
+  max-width: 1350px;
+  /* avant: 1500px */
+  margin: 0 auto;
+  padding: 2rem 1rem 3rem;
+  /* avant: 5rem 0rem 4rem */
+  position: relative;
+}
+
+.about-top {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+  align-items: start;
+  gap: 2rem;
+  position: relative;
+}
+
+.about-left {
+  max-width: 740px;
+}
+
+.about-heading {
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 2.2rem;
+  color: #2B3130;
+  line-height: 1.25;
+  /* tighter so <br> doesn't push too far */
+  margin-bottom: 1.25rem;
+}
+
+
+.about-figure {
+  margin: 0 0 2.5rem 0;
+  /* plus d'espace sous l'image */
+  position: relative;
+  /* permet à la légende de sortir du cadre */
+  grid-column: 2;
+  place-self: start end;
+}
+
+.about-figure img {
+  width: 900px;
+  height: 530px;
+  display: block;
+  border-radius: 10px;
+}
+
+.about-caption {
+  position: absolute;
+  bottom: -1px;
+  left: -190px;
+  font-size: 0.9rem;
+  color: #000;
+  width: 320px;
+}
+
+.about-cap-title {
+  font-weight: 600;
+  display: inline-block;
+}
+
+.about-cap-right {
+  display: block;
+  text-align: right;
+  /* aligne à droite */
+  padding-right: 151px;
+
+}
+
+.about-paragraphs {
+  margin: 2.25rem 0 3.8rem;
+  display: grid;
+  gap: 0.9rem;
+  font-weight: 550;
+}
+
+.about-paragraphs p {
+  font-family: 'Times New Roman', Times, serif;
+  line-height: 1.75;
+  color: #334155;
+  font-size: 1.17rem;
+}
+
+.about-banner {
+  position: relative;
+  margin: 2.25rem 0;
+  border-radius: 8px;
+  overflow: hidden;
+
+}
+
+.about-banner img {
+  width: 100%;
+  height: 560px;
+  object-fit: cover;
+  display: block;
+}
+
+.about-banner-text {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-weight: 800;
+  text-align: center;
+  text-shadow: 0 2px 8px rgba(138, 150, 143, 0.45);
+  font-size: 30px;
+}
+
+.about-bottom {
+  max-width: 760px;
+  margin: 4rem 0 0;
+  /* colle à gauche */
+  margin-left: 600px;
+  align-self: start;
+  text-align: left;
+  font-weight: 600;
+}
+
+.about-bottom p {
+  color: #334155;
+  line-height: 1.7;
+  font-size: 1.06rem;
+}
+
+
+/* Team Section */
+.team {
+  padding: 4rem 2rem;
+  background-color: white;
+}
+
+.team-container {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0 3.2rem;
+}
+
+.team-header {
+  margin-left: 4%;
+  text-align: left;
+}
+
+.team-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #1e293b;
+}
+
+.team-carousel {
+  position: relative;
+  border-radius: 16px;
+  margin-bottom: 2rem;
+}
+
+.carousel-container {
+  border-radius: 16px;
+}
+
+.carousel-track {
+  display: flex;
+  transition: transform 0.5s ease;
+  width: max-content;
+  padding: 0 3% 3% 3%;
+}
+
+.team-member-card {
+  flex: 0 0 30%;  
+  max-width: 30%;
+  display: flex;
+  background: linear-gradient(135deg, #027A5E 0%, #027A5E 100%);
+  color: rgb(255, 255, 255);
+  border-radius: 16px;
+  overflow: hidden;
+  margin: 0 1rem;
+  height: 300px;
+}
+
+
+
+.member-image img{
+  height: 100%;
+  max-width: 250px;
+  object-fit: cover;
+}
+
+
+.member-info {
+  flex: 1;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+
+}
+
+.member-name {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.member-position {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+.member-description {
+  font-size: 1rem;
+  line-height: 1.6;
+  opacity: 0.95;
+}
+
+.carousel-controls {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 1rem;
+  pointer-events: none;
+}
+
+.carousel-btn {
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #027A5E;
+  border: none;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  pointer-events: all;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.carousel-btn:hover {
+  background-color: white;
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 2rem;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: none;
+  background-color: #cbd5e1;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.dot.active {
+  background-color: #027A5E;
+  transform: scale(1.0);
+}
+
+.dot:hover {
+  background-color: #027A5E;
+  opacity: 0.7;
+}
+
+@media (max-width: 900px) {
+  .about-title {
+    font-size: 2.5rem;
+  }
+
+  .about-banner img {
+    height: 300px;
+  }
+}
+
+@media (max-width: 600px) {
+  .about-hero {
+    padding: 3rem 1rem 1.25rem;
+  }
+
+  .about-title {
+    font-size: 4rem;
+  }
+
+  .about-top {
+    grid-template-columns: 1fr;
+  }
+
+  .about-figure {
+    grid-column: auto;
+    place-self: auto;
+    margin-top: 0.75rem;
+  }
+
+  .about-figure img {
+    transform: none;
+  }
+
+  .about-banner img {
+    height: 240px;
+  }
+}

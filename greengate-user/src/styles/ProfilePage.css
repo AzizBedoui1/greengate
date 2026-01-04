@@ -1,0 +1,35 @@
+/* src/styles/ProfileLayout.css */
+
+.profile-layout-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8fafc 0%, #e6f0e6 100%);
+  padding: 3rem 5%;
+}
+
+.profile-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 3rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  margin-top: 4.5rem;
+}
+
+.profile-main-content {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(60, 60, 60, 0.08);
+  padding: 3rem;
+  min-height: 70vh;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .profile-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-main-content {
+    padding: 2rem;
+  }
+}

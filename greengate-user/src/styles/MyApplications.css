@@ -1,0 +1,115 @@
+.my-applications {
+  width: 100%;
+}
+
+.my-applications h1 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #3b4954;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.applications-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.application-card {
+  background: white;
+  border-radius: 16px;
+  padding: 1.8rem;
+  box-shadow: 0 4px 15px rgba(60, 60, 60, 0.06);
+  border-left: 6px solid #027A5E;
+  transition: all 0.3s;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.application-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(60, 60, 60, 0.12);
+}
+
+.application-card h3 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0;
+  flex: 1;
+}
+
+.application-card p {
+  color: #707785;
+  margin: 0.5rem 0 0;
+  font-size: 1rem;
+}
+
+.application-card .status {
+  padding: 0.5rem 1.2rem;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-transform: capitalize;
+}
+
+.application-card .status.pending {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.application-card .status.accepted {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.application-card .status.rejected {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #64748b;
+}
+
+.empty-state p {
+  font-size: 1.3rem;
+  margin-bottom: 1.5rem;
+}
+
+.empty-state .btn-primary {
+  display: inline-block;
+  background: #027A5E;
+  color: white;
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.empty-state .btn-primary:hover {
+  background: #01684d;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .application-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .application-card h3 {
+    font-size: 1.3rem;
+  }
+
+  .my-applications h1 {
+    font-size: 2.2rem;
+  }
+}

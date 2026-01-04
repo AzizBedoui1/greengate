@@ -1,0 +1,169 @@
+/* Footer Styles */
+.footer {
+  background-color: #2F3C44;
+  color: #E0D9D9;
+  font-family: serif;
+  padding: 2rem 0 1rem 0;
+  min-height: 300px;
+  margin-top: auto;
+
+  margin-left: calc(-50vw + 50%) !important;
+  left: 0 !important;
+  right: 0 !important;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0 5rem;
+  margin-bottom: 2rem;
+}
+
+.footer-column {
+  flex: 1;
+  margin-right: 2rem;
+}
+
+.footer-column:last-of-type {
+  margin-right: 0;
+}
+
+.footer-heading {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: #E0D9D9;
+}
+
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-links li {
+  margin-bottom: 0.5rem;
+}
+
+.footer-links a {
+  color: #E0D9D9;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: normal;
+  transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+  color: #ffffff;
+}
+
+/* Brand Section */
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-left: 2rem;
+}
+
+.footer-logo {
+  margin-bottom: 1rem;
+}
+
+.logo-dots {
+  width: 80px;
+  height: 80px;
+  position: relative;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: transparent;
+}
+
+.logo-dot {
+  position: absolute;
+  background-color: #E0D9D9;
+  border-radius: 50%;
+}
+
+.brand-name {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin: 0 0 0.5rem 0;
+  color: #E0D9D9;
+}
+
+.brand-tagline {
+  font-size: 1rem;
+  font-weight: normal;
+  margin: 0;
+  color: #E0D9D9;
+}
+
+/* Bottom Section */
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 1rem 2rem 0 2rem;
+  border-top: 1px solid rgba(224, 217, 217, 0.2);
+}
+
+.footer-copyright p,
+.footer-designer p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #E0D9D9;
+}
+
+.footer-designer {
+  text-align: right;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .footer-content {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .footer-column {
+    margin-right: 0;
+  }
+
+  .footer-brand {
+    margin-left: 0;
+    order: -1;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+
+  .footer-designer {
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer {
+    padding: 1.5rem 0.5rem 1rem;
+  }
+
+  .brand-name {
+    font-size: 1.5rem;
+  }
+
+  .logo-dots {
+    width: 60px;
+    height: 60px;
+  }
+}

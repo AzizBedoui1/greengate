@@ -1,0 +1,13 @@
+{
+  "contact-title": "Contact",
+  "location-title": "Location",
+  "location-address": "Avenue des Oliviers, 4th floor\nSousse 4000, Tunisia",
+  "form-title": "Form",
+  "name-label": "Name",
+  "email-label": "Email",
+  "phone-label": "Phone number",
+  "company-label": "Company (optional)",
+  "message-label": "Message",
+  "consent-text": "I consent to Green Gate processing my data for contact purposes.",
+  "send-button": "Send"
+}

@@ -1,0 +1,71 @@
+.profile-sidebar {
+  width: 280px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(60, 60, 60, 0.08);
+  padding: 2rem;
+  height: fit-content;
+  position: sticky;
+  top: 100px;
+}
+
+.sidebar-header {
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.sidebar-header h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #3b4954;
+  margin: 0;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.2rem;
+  border-radius: 12px;
+  text-decoration: none;
+  color: #3b4954;
+  font-weight: 500;
+  transition: all 0.3s;
+}
+
+.sidebar-link:hover {
+  background: rgba(124, 173, 124, 0.1);
+}
+
+.sidebar-link.active {
+  background: #027A5E;
+  color: white;
+}
+
+.sidebar-link.active .sidebar-icon {
+  filter: brightness(0) invert(1);
+}
+
+.sidebar-icon {
+  font-size: 1.4rem;
+}
+
+.sidebar-text {
+  font-size: 1.1rem;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .profile-sidebar {
+    width: 100%;
+    position: static;
+    margin-bottom: 2rem;
+  }
+}

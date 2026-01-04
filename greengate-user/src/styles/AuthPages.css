@@ -1,0 +1,131 @@
+/* src/styles/AuthPages.css */
+
+.auth-page-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8fafc 0%, #e6f0e6 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.auth-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(60, 60, 60, 0.08);
+  padding: 3rem 4rem;
+  width: 100%;
+  max-width: 480px;
+  text-align: center;
+}
+
+.auth-title {
+  font-size: 3.5rem;
+  font-weight: bold;
+  color: #3b4954;
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.02em;
+}
+
+.auth-subtitle {
+  font-size: 1.2rem;
+  color: #707785;
+  margin-bottom: 2rem;
+}
+
+.auth-error {
+  background: #fee2e2;
+  color: #991b1b;
+  padding: 1rem;
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.form-group {
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  color: #3b4954;
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 1rem 1.2rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  transition: all 0.3s;
+  background: #f8fafc;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #027A5E;
+  background: white;
+  box-shadow: 0 0 0 4px rgba(2, 122, 94, 0.1);
+}
+
+.auth-btn-primary {
+  background: #027A5E;
+  color: white;
+  padding: 1.1rem;
+  font-size: 1.3rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 4px 15px rgba(2, 122, 94, 0.2);
+}
+
+.auth-btn-primary:hover {
+  background: #01684d;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(2, 122, 94, 0.3);
+}
+
+.auth-btn-primary:disabled {
+  background: #94a3b8;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.auth-footer-text {
+  color: #707785;
+  font-size: 1.1rem;
+}
+
+.auth-link {
+  color: #027A5E;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.auth-link:hover {
+  text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .auth-card {
+    padding: 2rem;
+  }
+
+  .auth-title {
+    font-size: 2.8rem;
+  }
+}

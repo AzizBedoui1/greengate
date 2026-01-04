@@ -1,0 +1,116 @@
+.lang-switcher {
+  position: relative;
+  display: inline-block;
+}
+
+.lang-icon-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #4b5563;
+  font-size: 20px;
+  transition: all 0.3s ease;
+}
+
+.lang-icon-btn:hover {
+  color: #027A5E;
+  transform: scale(1.5);
+}
+
+.lang-icon-btn.open {
+  color: #027A5E;
+}
+
+/* Globe icon */
+.globe-icon {
+  font-size: 22px;
+}
+
+/* Dropdown Menu */
+.lang-menu {
+  position: absolute;
+  top: 52px;
+  right: 0;
+  background: white;
+  border-radius: 16px;
+  min-width: 180px;
+  box-shadow: 0 12px 32px rgba(60, 60, 60, 0.15);
+  border: 1px solid rgba(124, 173, 124, 0.2);
+  overflow: hidden;
+  z-index: 1000;
+}
+
+/* Pointer Arrow */
+.lang-menu::before {
+  content: "";
+  position: absolute;
+  top: -8px;
+  right: 12px;
+  width: 16px;
+  height: 16px;
+  background: white;
+  border: 1px solid rgba(124, 173, 124, 0.2);
+  border-bottom: none;
+  border-right: none;
+  transform: rotate(45deg);
+  z-index: -1;
+}
+
+.lang-option {
+  padding: 14px 20px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 500;
+  color: #3b4954;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  transition: all 0.3s ease;
+}
+
+.lang-option:hover {
+  background: rgba(124, 173, 124, 0.15);
+  color: #027A5E;
+  padding-left: 28px;
+}
+
+.lang-option.active {
+  background: rgba(124, 173, 124, 0.25);
+  color: #027A5E;
+  font-weight: 600;
+}
+
+.lang-flag {
+  font-size: 22px;
+}
+
+.lang-name {
+  flex: 1;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .lang-switcher {
+    margin-left: 12px;
+  }
+
+  .lang-icon-btn {
+    width: 36px;
+    height: 36px;
+  }
+
+  .globe-icon {
+    font-size: 20px;
+  }
+
+  .lang-menu {
+    top: 48px;
+    min-width: 160px;
+  }
+}

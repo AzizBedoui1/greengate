@@ -1,0 +1,30 @@
+{
+  "title": "About us",
+
+  "heading": "Driving Change Through Innovation and Youth Power",
+
+  "caption-title": "Executive Board members",
+  "caption-location": "London, 2025",
+
+  "paragraph1": "Innovation is at the core of everything we do at Green Gate. From the very beginning, we've believed that solving today’s climate challenges requires bold ideas, fresh perspectives, and a deep connection with nature. By empowering youth across the MENA region, we’re building a movement that blends environmental action with creative solutions. Our work spans across climate education, ecological restoration, youth mobilization, and green advocacy — all rooted in innovation, community, and purpose. We continuously explore new approaches to create meaningful change, amplify impact, and inspire the next generation of environmental leaders. Join us as we reimagine what’s possible — and take action for a more just, green, and regenerative future.",
+
+  "banner-text": "Building a consistent future generation",
+
+  "paragraph2": "From the very beginning, innovation has been woven into Green Gate’s DNA. It's more than just a value — it's the engine driving our mission forward. Our founding members saw a critical gap: the need to empower youth as leaders in shaping a more sustainable future. They knew that real impact required fresh thinking, bold actions, and the courage to disrupt the status quo. This commitment to innovative, youth-led solutions has fueled our work across climate advocacy, ecological restoration, and environmental education. We’ve built a culture that thrives on experimentation, embraces collaboration, and turns challenges into opportunities. As we grow, we remain rooted in our mission — to be a catalyst for bold change and a beacon for the next generation of environmental leaders.",
+
+  "team-title": "Our Team",
+
+  "positions": {
+    "chief-manager": "Chief Manager",
+    "environmental-coordinator": "Environmental Coordinator",
+    "youth-engagement": "Youth Engagement Lead",
+    "community-outreach": "Community Outreach"
+  },
+
+  "descriptions": {
+    "chief-manager": "Leading the vision and strategy for Green Gate's mission across MENA region.",
+    "environmental-coordinator": "Expert in sustainable development and environmental policy implementation.",
+    "youth-engagement": "Passionate about empowering young leaders and creating meaningful opportunities.",
+    "community-outreach": "Building bridges between communities and fostering collaborative initiatives."
+  }
+}

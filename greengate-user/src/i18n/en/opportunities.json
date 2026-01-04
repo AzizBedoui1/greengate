@@ -1,0 +1,18 @@
+{
+    "opp1": {
+        "title": "Opportunities",
+        "description": "Find opportunities to volunteer in key events and be heard."
+    },
+    "opp2": {
+        "title": "Fellowships",
+        "description": "Join our fellowship program and be part of a great team that will help you achieve your goals."
+    },
+    "opp3": {
+        "title": "Webinars",
+        "description": "Attend different webinars regarding topics like environmental and political issues."
+    },
+    "opp4": {
+        "title": "Community",
+        "description": "Be a part of an amazing community that is always there for you to help you achieve your goals."
+    }
+}

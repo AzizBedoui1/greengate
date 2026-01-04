@@ -1,0 +1,205 @@
+.fellowship-detail-container {
+  padding: 2rem 5%;
+  max-width: 1400px;
+  margin: 0 auto;
+  margin-top: 5rem;
+  min-height: 80vh;
+}
+
+.fellowship-detail-hero {
+  margin-bottom: 3rem;
+  text-align: center;
+  position: relative;
+}
+
+.back-link {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #027A5E;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.fellowship-detail-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #3b4954;
+  letter-spacing: 0.02em;
+  margin: 2rem 0;
+}
+
+.fellowship-detail-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: start;
+}
+
+.fellowship-detail-image-wrapper {
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.fellowship-detail-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.fellowship-detail-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1.8rem;
+  background: rgba(124, 173, 124, 0.08);
+    padding: 1.2rem 1.5rem;
+  border-radius: 12px;
+}
+
+.row-item {
+  display: flex;
+  width: 100%;
+}
+
+.info-item {
+  width: 100%;
+  padding-right: 3rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.info-label {
+  display: block;
+  font-size: 0.95rem;
+  color: #707785;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.info-value {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.info-value.deadline {
+  color: #027A5E;
+  font-weight: 700;
+}
+
+.description-text {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #222e;
+  white-space: pre-wrap;
+}
+
+
+.apply-btn-large {
+  display: inline-block;
+  background: #027A5E;
+  color: white;
+  padding: 0.7rem 1.2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 999px;
+  text-decoration: none;
+  transition: all 0.3s;
+  box-shadow: 0 4px 15px rgba(2, 122, 94, 0.2);
+}
+
+.apply-btn-large:hover {
+  background: #01684d;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(2, 122, 94, 0.3);
+}
+
+/* Not Found State */
+.detail-not-found {
+  text-align: center;
+  padding: 6rem 2rem;
+  color: #64748b;
+}
+
+.detail-not-found h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+/* Responsive */
+@media (max-width: 968px) {
+  .fellowship-detail-content {
+    grid-template-columns: 1fr;
+  }
+
+  .fellowship-detail-title {
+    font-size: 2.8rem;
+  }
+
+  .info-item.full-width {
+    grid-column: 1;
+  }
+}
+
+@media (max-width: 600px) {
+  .fellowship-detail-title {
+    font-size: 2.2rem;
+  }
+
+  .back-link {
+    position: static;
+    margin-bottom: 1rem;
+    transform: none;
+  }
+}
+
+
+.apply-btn-large:hover:not(:disabled) {
+  background: #01684d;
+  transform: translateY(-4px);
+  box-shadow: 0 10px 30px rgba(2, 122, 94, 0.35);
+}
+
+.apply-btn-large:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.apply-btn-large.applying {
+  background: #94a3b8;
+}
+
+.apply-btn-large.success {
+  background: #065f46;
+  cursor: default;
+}
+
+.apply-btn-large.error {
+  background: #991b1b;
+}
+
+.apply-success-note,
+.apply-error-note {
+  margin-top: 1rem;
+  font-size: 1.1rem;
+  text-align: center;
+}
+
+.apply-success-note {
+  color: #065f46;
+  font-weight: 600;
+}
+
+.apply-error-note {
+  color: #991b1b;
+}
