@@ -13,7 +13,7 @@ pipeline {
         K8S_NAMESPACE = "greengate"
         
         // Define the Backend URL for the Frontend to use
-        BACKEND_URL = "http://localhost:30001"
+        BACKEND_URL = "http://localhost:30001/api"
     }
     
     stages {
