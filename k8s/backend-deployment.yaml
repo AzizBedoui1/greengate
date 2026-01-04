@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: greengate-backend
+  namespace: greengate
+  labels:
+    app: greengate-backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: greengate-backend
+  template:
+    metadata:
+      labels:
+        app: greengate-backend
+    spec:
+      containers:
+      - name: backend
+        image: greengate-backend:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 5000
+          name: http
+        env:
+        - name: MONGO_URI
+          value: "mongodb://mongo-service:27017/greengate"
+        - name: JWT_SECRET
+          value: "your_jwt_secret_here"
+        - name: JWT_EXPIRE
+          value: "7d"
+        - name: PORT
+          value: "5000"
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+  namespace: greengate
+spec:
+  selector:
+    app: greengate-backend
+  type: NodePort
+  ports:
+  - protocol: TCP
+    port: 5000
+    targetPort: 5000
+    nodePort: 30001

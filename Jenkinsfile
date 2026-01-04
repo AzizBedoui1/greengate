@@ -4,6 +4,7 @@ pipeline {
     environment {
         DOCKER_COMPOSE = "docker-compose"
         COMPOSE_PROJECT_NAME = "greengate"
+        IMAGE_TAG = "${BUILD_NUMBER}"
     }
     
     stages {
@@ -14,61 +15,131 @@ pipeline {
             }
         }
         
-        stage('Stop Running Containers') {
+        stage('Build Docker Images') {
             steps {
-                echo 'Stopping existing containers...'
-                bat "${DOCKER_COMPOSE} down --remove-orphans"
-            }
-        }
-        
-        stage('Clean Docker Resources') {
-            steps {
-                echo 'Cleaning up old images and containers...'
+                echo 'Building Docker images...'
                 bat """
-                    docker system prune -f
-                    docker volume prune -f
+                    docker build -t greengate-backend:latest ./greengate-backend
+                    docker build -t greengate-admin:latest ./greengate-admin
+                    docker build -t greengate-user:latest ./greengate-user
                 """
             }
         }
         
-        stage('Build and Deploy') {
+        stage('Trivy Security Scan') {
             steps {
-                echo 'Building and starting all services...'
-                bat "${DOCKER_COMPOSE} up -d --build --force-recreate"
-            }
-        }
-        
-        stage('Health Check') {
-            steps {
-                echo 'Checking container health...'
+                echo 'Scanning images for vulnerabilities with Trivy...'
                 script {
-                    sleep 10 // Wait for containers to start
-                    bat "${DOCKER_COMPOSE} ps"
+                    // Scan backend image
+                    bat """
+                        echo Scanning Backend...
+                        trivy image --severity HIGH,CRITICAL --format table greengate-backend:latest
+                        trivy image --severity HIGH,CRITICAL --format json --output trivy-backend-report.json greengate-backend:latest
+                    """
+                    
+                    // Scan admin frontend image
+                    bat """
+                        echo Scanning Admin Frontend...
+                        trivy image --severity HIGH,CRITICAL --format table greengate-admin:latest
+                        trivy image --severity HIGH,CRITICAL --format json --output trivy-admin-report.json greengate-admin:latest
+                    """
+                    
+                    // Scan user frontend image
+                    bat """
+                        echo Scanning User Frontend...
+                        trivy image --severity HIGH,CRITICAL --format table greengate-user:latest
+                        trivy image --severity HIGH,CRITICAL --format json --output trivy-user-report.json greengate-user:latest
+                    """
                 }
             }
         }
         
-        stage('Display Logs') {
+        stage('Tag Images for Kubernetes') {
             steps {
-                echo 'Displaying recent container logs...'
-                bat "${DOCKER_COMPOSE} logs --tail=50"
+                echo 'Tagging images...'
+                bat """
+                    docker tag greengate-backend:latest greengate-backend:${IMAGE_TAG}
+                    docker tag greengate-admin:latest greengate-admin:${IMAGE_TAG}
+                    docker tag greengate-user:latest greengate-user:${IMAGE_TAG}
+                """
+            }
+        }
+        
+        stage('Deploy to Kubernetes') {
+            steps {
+                echo 'Deploying to Kubernetes (Docker Desktop)...'
+                script {
+                    // Apply all Kubernetes manifests
+                    bat """
+                        kubectl apply -f k8s/namespace.yaml
+                        kubectl apply -f k8s/mongodb-deployment.yaml
+                        timeout /t 10 /nobreak
+                        kubectl apply -f k8s/backend-deployment.yaml
+                        kubectl apply -f k8s/admin-deployment.yaml
+                        kubectl apply -f k8s/user-deployment.yaml
+                    """
+                    
+                    // Wait for deployments to be ready
+                    echo 'Waiting for deployments to be ready...'
+                    bat """
+                        kubectl wait --for=condition=available --timeout=300s deployment/mongodb -n greengate
+                        kubectl wait --for=condition=available --timeout=300s deployment/greengate-backend -n greengate
+                        kubectl wait --for=condition=available --timeout=300s deployment/greengate-admin -n greengate
+                        kubectl wait --for=condition=available --timeout=300s deployment/greengate-user -n greengate
+                    """
+                }
+            }
+        }
+        
+        stage('Verify Deployment') {
+            steps {
+                echo 'Verifying Kubernetes deployment...'
+                bat """
+                    echo.
+                    echo ========== PODS ==========
+                    kubectl get pods -n greengate
+                    echo.
+                    echo ========== SERVICES ==========
+                    kubectl get services -n greengate
+                    echo.
+                    echo ========== DEPLOYMENTS ==========
+                    kubectl get deployments -n greengate
+                """
             }
         }
     }
     
     post {
         success {
-            echo 'Greengate application deployed successfully!'
-            echo 'All services are up and running'
+            echo 'BUILD, SCAN, AND DEPLOYMENT COMPLETED SUCCESSFULLY!'
+            echo ''
+            echo 'Trivy Security Reports:'
+            echo '   - trivy-backend-report.json'
+            echo '   - trivy-admin-report.json'
+            echo '   - trivy-user-report.json'
+            echo ''
+            echo 'Application Deployed to Kubernetes!'
+            echo ''
+            echo 'Access your application at:'
+            echo '   Backend API:     http://localhost:30001'
+            echo '   Admin Frontend:  http://localhost:30002'
+            echo '   User Frontend:   http://localhost:30003'
+            echo '   MongoDB:         localhost:30017'
+            
+            // Archive Trivy reports
+            archiveArtifacts artifacts: 'trivy-*-report.json', allowEmptyArchive: true
         }
         failure {
-            echo 'Deployment failed!'
-            echo 'Checking logs for errors...'
-            bat "${DOCKER_COMPOSE} logs --tail=100"
+            echo 'PIPELINE FAILED!'
+            echo 'Checking Kubernetes status...'
+            bat """
+                kubectl get pods -n greengate
+                kubectl get events -n greengate --sort-by=.metadata.creationTimestamp
+            """
         }
         always {
-            echo 'Deployment process completed'
-            bat "${DOCKER_COMPOSE} ps"
+            echo 'Pipeline execution completed'
+            echo 'Check Console Output for detailed logs'
         }
     }
 }
