@@ -137,9 +137,7 @@ pipeline {
                     // Wait for deployments to be ready
                     echo 'Waiting for deployments to be ready...'
                     bat """
-                        kubectl wait --for=condition=available --timeout=300s deployment/%HELM_RELEASE_NAME%-greengate-backend -n %K8S_NAMESPACE%
-                        kubectl wait --for=condition=available --timeout=300s deployment/%HELM_RELEASE_NAME%-greengate-admin -n %K8S_NAMESPACE%
-                        kubectl wait --for=condition=available --timeout=300s deployment/%HELM_RELEASE_NAME%-greengate-user -n %K8S_NAMESPACE%
+                        kubectl wait --for=condition=available --timeout=300s deployment -l release=greengate -n greengate
                     """
                 }
             }
