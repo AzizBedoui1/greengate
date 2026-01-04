@@ -30,6 +30,11 @@ app.use("/api/opportunities", opportunityRoutes);
 
 app.use("/api/uploads", express.static("uploads"));
 
+// Health check endpoint for kubernetes pod liveness and readiness probes
+app.get('/health', (req, res) => {
+  res.status(200).send('OK');
+});
+
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, async () => {
