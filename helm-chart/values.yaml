@@ -95,6 +95,7 @@ resources:
 # Environment variables
 env:
   backend:
+    MONGO_URI: "mongodb://greengate-mongo:27017/greengate"
     JWT_SECRET: "your_jwt_secret_here"
     JWT_EXPIRE: "7d"
     PORT: "5000"
