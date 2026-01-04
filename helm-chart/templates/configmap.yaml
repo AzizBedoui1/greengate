@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "greengate.fullname" . }}-config
+  labels:
+    app: {{ include "greengate.name" . }}
+    chart: {{ include "greengate.chart" . }}
+    release: {{ .Release.Name }}
+data:
+  # Backend configuration
+  MONGO_URI: {{ .Values.env.backend.MONGO_URI | quote }}
+  JWT_EXPIRE: {{ .Values.env.backend.JWT_EXPIRE | quote }}
+  PORT: {{ .Values.env.backend.PORT | quote }}
+  
+  # Frontend configuration
+  VITE_API_URL_USER: {{ .Values.env.user.VITE_API_URL | quote }}
+  VITE_API_URL_ADMIN: {{ .Values.env.admin.VITE_API_URL | quote }}

@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: greengate-admin
+  namespace: greengate
+  labels:
+    app: greengate-admin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: greengate-admin
+  template:
+    metadata:
+      labels:
+        app: greengate-admin
+    spec:
+      containers:
+      - name: admin
+        image: greengate-admin:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+          name: http
+        env:
+        - name: VITE_API_URL
+          value: "http://localhost:30001"
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "200m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: admin-service
+  namespace: greengate
+spec:
+  selector:
+    app: greengate-admin
+  type: NodePort
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+    nodePort: 30002

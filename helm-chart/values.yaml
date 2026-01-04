@@ -1,0 +1,125 @@
+# Default values for greengate helm chart
+
+# Namespace where the application will be deployed
+namespace: greengate
+
+replicaCount:
+  backend: 2
+  user: 2
+  admin: 2
+  mongo: 1
+
+image:
+  backend:
+    repository: moncefazizbedoui/greengate-backend
+    tag: latest
+    pullPolicy: IfNotPresent
+  user:
+    repository: moncefazizbedoui/greengate-user
+    tag: latest
+    pullPolicy: IfNotPresent
+  admin:
+    repository: moncefazizbedoui/greengate-admin
+    tag: latest
+    pullPolicy: IfNotPresent
+  mongo:
+    repository: mongo
+    tag: "6"
+    pullPolicy: IfNotPresent
+
+service:
+  backend:
+    type: NodePort
+    port: 5000
+    targetPort: 5000
+    nodePort: 30001
+  user:
+    type: NodePort
+    port: 80
+    targetPort: 80
+    nodePort: 30003
+  admin:
+    type: NodePort
+    port: 80
+    targetPort: 80
+    nodePort: 30002
+  mongo:
+    type: ClusterIP
+    port: 27017
+    targetPort: 27017
+
+ingress:
+  enabled: false
+  className: nginx
+  annotations: {}
+  hosts:
+    - host: greengate.local
+      paths:
+        - path: /api
+          pathType: Prefix
+          service: backend
+        - path: /
+          pathType: Prefix
+          service: user
+
+resources:
+  backend:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 250m
+      memory: 256Mi
+  user:
+    limits:
+      cpu: 200m
+      memory: 256Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+  admin:
+    limits:
+      cpu: 200m
+      memory: 256Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+  mongo:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 250m
+      memory: 256Mi
+
+# Environment variables
+env:
+  backend:
+    JWT_SECRET: "your_jwt_secret_here"
+    JWT_EXPIRE: "7d"
+    PORT: "5000"
+  user:
+    # For local development with NodePort
+    VITE_API_URL: "http://localhost:30001"
+  admin:
+    # For local development with NodePort
+    VITE_API_URL: "http://localhost:30001"
+
+# MongoDB persistence
+persistence:
+  enabled: true
+  storageClass: ""
+  accessMode: ReadWriteOnce
+  size: 8Gi
+
+# Monitoring configuration
+monitoring:
+  enabled: true
+  serviceMonitor:
+    enabled: false
+    interval: 30s
+    path: /metrics
+
+# Istio service mesh (for bonus)
+istio:
+  enabled: false

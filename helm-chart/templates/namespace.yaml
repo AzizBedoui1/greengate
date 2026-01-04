@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{ .Values.namespace | default "greengate" }}
+  labels:
+    name: {{ .Values.namespace | default "greengate" }}
+    app: {{ include "greengate.name" . }}
+    chart: {{ include "greengate.chart" . }}
+    release: {{ .Release.Name }}
+    istio-injection: {{ .Values.istio.enabled | default "disabled" }}
