@@ -13,7 +13,7 @@ pipeline {
         K8S_NAMESPACE = "greengate"
         
         // Define the Backend URL for the Frontend to use
-        BACKEND_URL = "http://localhost:30001"
+        BACKEND_URL = "http://localhost:30001/api"
     }
     
     stages {
@@ -26,12 +26,10 @@ pipeline {
         
         stage('Build Docker Images') {
             steps {
-                echo 'Building Docker images with Build Arguments...'
-                // We add --build-arg so Vite knows where the backend is located
                 bat """
-                    docker build -t greengate-backend:latest ./greengate-backend
-                    docker build --build-arg VITE_API_URL=%BACKEND_URL% -t greengate-admin:latest ./greengate-admin
-                    docker build --build-arg VITE_API_URL=%BACKEND_URL% -t greengate-user:latest ./greengate-user
+                    docker build --build-arg VITE_API_URL=%BACKEND_URL% -t %DOCKERHUB_USERNAME%/greengate-admin:%IMAGE_TAG% ./greengate-admin
+                    docker build --build-arg VITE_API_URL=%BACKEND_URL% -t %DOCKERHUB_USERNAME%/greengate-user:%IMAGE_TAG% ./greengate-user
+                    docker build -t %DOCKERHUB_USERNAME%/greengate-backend:%IMAGE_TAG% ./greengate-backend
                 """
             }
         }

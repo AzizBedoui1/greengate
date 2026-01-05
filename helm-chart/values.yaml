@@ -13,15 +13,15 @@ image:
   backend:
     repository: moncefazizbedoui/greengate-backend
     tag: latest
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
   user:
     repository: moncefazizbedoui/greengate-user
     tag: latest
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
   admin:
     repository: moncefazizbedoui/greengate-admin
     tag: latest
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
   mongo:
     repository: mongo
     tag: "6"
@@ -101,10 +101,10 @@ env:
     PORT: "5000"
   user:
     # For local development with NodePort
-    VITE_API_URL: "http://localhost:30001"
+    VITE_API_URL: "http://localhost:30001/api"
   admin:
     # For local development with NodePort
-    VITE_API_URL: "http://localhost:30001"
+    VITE_API_URL: "http://localhost:30001/api"
 
 # MongoDB persistence
 persistence:
@@ -117,7 +117,7 @@ persistence:
 monitoring:
   enabled: true
   serviceMonitor:
-    enabled: false
+    enabled: true
     interval: 30s
     path: /metrics
 
