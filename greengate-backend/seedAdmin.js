@@ -29,8 +29,6 @@ async function seedAdmin() {
   }
 }
 
-if (require.main === module) {
-  seedAdmin();
-}
+
 
 module.exports = { seedAdmin };

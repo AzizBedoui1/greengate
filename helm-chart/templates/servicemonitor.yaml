@@ -2,17 +2,18 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: {{ include "greengate.fullname" . }}-backend
+  name: greengate-backend
+  namespace: greengate
   labels:
-    app: {{ include "greengate.name" . }}-backend
+    app: greengate-backend
     chart: {{ include "greengate.chart" . }}
-    release: {{ .Release.Name }}
+    release: monitor
     component: backend
 spec:
   selector:
     matchLabels:
-      app: {{ include "greengate.name" . }}-backend
-      release: {{ .Release.Name }}
+      app: greengate-backend
+      release: greengate
   endpoints:
   - port: http
     path: {{ .Values.monitoring.serviceMonitor.path }}
