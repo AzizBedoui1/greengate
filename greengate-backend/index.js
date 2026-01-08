@@ -13,9 +13,10 @@ const blogRoutes = require("./routes/blogs");
 const fellowshipRoutes = require("./routes/fellowships");
 const applicationRoutes = require("./routes/applications");
 const opportunityRoutes = require("./routes/opportunities");
+const aiRoutes = require("./routes/aiRoutes");
 
 
-const app = express();
+const app = express(); 
 connectDB();
 
 app.use(cors());
@@ -29,6 +30,7 @@ app.use("/api/blogs", blogRoutes);
 app.use("/api/fellowships", fellowshipRoutes);
 app.use("/api/applications", applicationRoutes);
 app.use("/api/opportunities", opportunityRoutes);
+app.use("/api/ai", aiRoutes);
 
 app.use("/api/uploads", express.static("uploads"));
 
@@ -46,8 +48,6 @@ app.get('/metrics', async (req, res) => {
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, async () => {
   console.log(`Server running on port ${PORT}`);
-
-  await seedAdmin();
 });
  
 

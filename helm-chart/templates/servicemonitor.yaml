@@ -3,7 +3,7 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: greengate-backend
-  namespace: monitoring
+  namespace: greengate
   labels:
     app: greengate-backend
     chart: {{ include "greengate.chart" . }}
