@@ -1,6 +1,3 @@
-# Default values for greengate helm chart
-
-# Namespace where the application will be deployed
 namespace: greengate
 
 replicaCount:

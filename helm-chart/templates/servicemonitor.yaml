@@ -6,7 +6,7 @@ metadata:
   labels:
     app: {{ include "greengate.name" . }}-backend
     chart: {{ include "greengate.chart" . }}
-    release: {{ .Release.Name }}
+    release: monitor
     component: backend
 spec:
   selector:
