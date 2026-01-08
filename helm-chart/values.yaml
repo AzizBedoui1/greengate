@@ -28,6 +28,7 @@ service:
   backend:
     type: NodePort
     port: 5000
+    name: http
     targetPort: 5000
     nodePort: 30001
   user:
@@ -113,6 +114,7 @@ persistence:
 # Monitoring configuration
 monitoring:
   enabled: true
+  releaseLabel: monitor
   serviceMonitor:
     enabled: true
     interval: 30s
