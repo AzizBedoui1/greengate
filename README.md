@@ -1,13 +1,3 @@
----
-
-## 🛠️ Prerequisites
-
-Before starting, ensure you have the following installed on your machine:
-
-* **Node.js** (v18 or higher recommended)
-* **npm** (comes with Node.js)
-* **MongoDB** (Local instance or Atlas URI)
-* **Gemini API Key** (from Google AI Studio)
 
 ---
 
