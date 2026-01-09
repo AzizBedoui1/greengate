@@ -22,7 +22,7 @@ const ChatBubble = () => {
   const fetchFeatured = async () => {
     setLoading(true);
     try {
-      const { data } = await axios.post('http://localhost:5000/api/ai/chat');
+      const { data } = await axios.post('http://localhost:30001/api/ai/chat');
       setMessages(prev => [...prev, { 
         role: 'ai', 
         text: data.reply, 
@@ -43,7 +43,7 @@ const ChatBubble = () => {
     setLoading(true);
 
     try {
-      const { data } = await axios.post('http://localhost:5000/api/ai/chat', { message: input });
+      const { data } = await axios.post('http://localhost:30001/api/ai/chat', { message: input });
       setMessages(prev => [...prev, { role: 'ai', text: data.reply, blogs: data.sourceData }]);
     } catch (err) {
       setMessages(prev => [...prev, { role: 'ai', text: "I'm having trouble connecting right now." }]);
