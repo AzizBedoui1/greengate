@@ -150,6 +150,8 @@ Instead of using generic tags, every build generates a unique image tag based on
 
 * **Command:** `docker build -t user/greengate-admin:${BUILD_NUMBER} .`
 
+<img width="1885" height="900" alt="Capture d&#39;écran 2026-01-04 201828" src="https://github.com/user-attachments/assets/f18ff1a0-c946-4025-b2fb-ff629d19430c" />
+
 ### 2. Security Scanning (Trivy)
 
 Before any image is pushed, it undergoes a **vulnerability scan**.
@@ -174,6 +176,8 @@ ArgoCD acts as the **Kubernetes Controller** that bridges the gap between our Gi
 
 * **Source of Truth:** The Git repository (specifically the Helm `values.yaml`) is the only place where the version of the app is defined.
 * **Self-Healing:** If someone manually deletes a pod or changes a service in the cluster, ArgoCD will detect the "Out of Sync" status and automatically revert the cluster to the state defined in Git.
+* 
+<img width="1919" height="1079" alt="Capture d&#39;écran 2026-01-04 175001" src="https://github.com/user-attachments/assets/07d8b516-5aff-4f0a-93d1-23fbaaf028cf" />
 
 ### Helm Chart Strategy
 
@@ -190,6 +194,8 @@ To maintain the health of the DevOps environment, we use **Prometheus and Grafan
 
 * **Service Metrics:** Monitoring CPU/Memory usage of the Jenkins agent and Kubernetes nodes.
 * **Visual Access:** Accessible via port-forwarding on port **8083**.
+  
+<img width="1916" height="873" alt="Capture d&#39;écran 2026-01-04 223325" src="https://github.com/user-attachments/assets/78ddd3dc-4339-45d0-8dbe-d293b7f221ae" />
 
 ---
 
@@ -212,5 +218,6 @@ Access the ArgoCD dashboard to see the real-time "Resource Tree":
 kubectl port-forward svc/argocd-server -n argocd 8080:443
 
 ```
+<img width="497" height="441" alt="Capture d&#39;écran 2026-01-04 213840" src="https://github.com/user-attachments/assets/4a6bebb1-782e-4784-a7dc-ed71eda8cb1f" />
 
 ---
