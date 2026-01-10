@@ -174,6 +174,8 @@ ArgoCD acts as the **Kubernetes Controller** that bridges the gap between our Gi
 
 * **Source of Truth:** The Git repository (specifically the Helm `values.yaml`) is the only place where the version of the app is defined.
 * **Self-Healing:** If someone manually deletes a pod or changes a service in the cluster, ArgoCD will detect the "Out of Sync" status and automatically revert the cluster to the state defined in Git.
+* 
+<img width="1919" height="1079" alt="Capture d&#39;écran 2026-01-04 175001" src="https://github.com/user-attachments/assets/07d8b516-5aff-4f0a-93d1-23fbaaf028cf" />
 
 ### Helm Chart Strategy
 
